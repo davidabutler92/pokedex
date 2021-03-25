@@ -2,6 +2,8 @@ import React, { useState, useCallback, useRef } from "react";
 
 import usePokemon from "../hooks/usePokemon";
 import SearchForm from "../components/forms/SearchForm";
+import PokeList from "../components/list/PokeList";
+import AdvancedSearchForm from "../components/filters/AdvancedSearchForm";
 
 function Home() {
   const [offset, setOffset] = useState(0);
@@ -13,6 +15,7 @@ function Home() {
     error,
     handleSubmit,
     setFormValues,
+    isSubmitting,
   } = usePokemon(offset);
 
   const observer = useRef();
@@ -34,35 +37,15 @@ function Home() {
   return (
     <>
       <SearchForm handleSubmit={handleSubmit} setFormValues={setFormValues} />
-      {error ? (
-        <p>{error}</p>
-      ) : (
-        <ul>
-          {pokemon.map((poke, index) => {
-            if (pokemon.length === index + 1 && pokemon.length > 1) {
-              return (
-                <li key={poke.data.name} ref={lastPokemonElementRef}>
-                  <p>{poke.data.name}</p>
-                  <img
-                    src={poke.data.sprites.front_default}
-                    alt={poke.data.name}
-                  />
-                </li>
-              );
-            }
-            return (
-              <li key={poke.data.name}>
-                <p>{poke.data.name}</p>
-                <img
-                  src={poke.data.sprites.front_default}
-                  alt={poke.data.name}
-                />
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {loading ? <p>loading...</p> : <p></p>}
+      <AdvancedSearchForm />
+      <PokeList
+        error={error}
+        isSubmitting={isSubmitting}
+        loading={loading}
+        pokemon={pokemon}
+        lastPokemonElementRef={lastPokemonElementRef}
+      />
+      {loading && isSubmitting === false ? <p>loading...</p> : <p></p>}
     </>
   );
 }
