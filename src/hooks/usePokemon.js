@@ -7,24 +7,30 @@ export default function usePokemon(offset) {
   const [hasMore, setHasMore] = useState(false);
   const [formValues, setFormValues] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
     setLoading(true);
     if (formValues === "") {
       offset = 0;
       getPokemon(offset).then((res) => {
+        setIsSubmitting(false);
         setError("");
         setPokemon(res);
         setLoading(false);
       });
     } else {
       getPokemonByName(formValues).then((res) => {
+        setIsSubmitting(false);
         if (res.status === 200) {
           setPokemon([res]);
+          setError("");
           setLoading(false);
         } else {
-          setError(`Please check spelling, could not find ${formValues}`);
+          setIsSubmitting(false);
+          setError("No Pokémon matched your search.");
           setLoading(false);
         }
       });
@@ -51,5 +57,6 @@ export default function usePokemon(offset) {
     setFormValues,
     formValues,
     error,
+    isSubmitting,
   };
 }
