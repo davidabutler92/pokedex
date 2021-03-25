@@ -1,23 +1,3 @@
-// const types = [
-//   "bug",
-//   "fairy",
-//   "fire",
-//   "ghost",
-//   "ground",
-//   "normal",
-//   "psychic",
-//   "steel",
-//   "dark",
-//   "electric",
-//   "fighting",
-//   "flying",
-//   "grass",
-//   "ice",
-//   "poison",
-//   "rock",
-//   "water",
-// ];
-
 const types = [
   {
     title: "Bug",
